@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project" default="default" basedir="."
+	xmlns:fx="javafx:com.sun.javafx.tools.ant">
+
+	<description>SimpleApp5のビルド</description>
+
+	<!-- Jdk8のjavapackagerのantタスクを定義する -->
+	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+		uri="javafx:com.sun.javafx.tools.ant"
+		classpath=".:${java.home}/../lib/ant-javafx.jar" />
+
+	<!-- SimpleApp5を実行可能jarとしてビルドする -->
+	<target name="default" description="SimpleApp5のビルド">
+		<delete dir="work"/>
+		<mkdir dir="work"/>
+		<javac srcdir="src" destdir="work"
+			includeantruntime="false">
+			<classpath>
+				<pathelement path="work"/>
+			</classpath>
+		</javac>
+
+		<fx:jar destfile="SimpleApp5">
+			<fx:application name="SimpleApp5"
+				mainClass="jp.seraphyware.simpleapp5.SimpleApp5"/>
+
+			<fileset dir="work"/>
+			<fileset dir="src" excludes="**/*.java"/>
+
+			<manifest>
+				<attribute name="Implementation-Vendor" value="seraphyware.jp"/>
+				<attribute name="Implementation-Version" value="1.0"/>
+			</manifest>
+		</fx:jar>
+
+		<delete dir="work"/>
+	</target>
+</project>
