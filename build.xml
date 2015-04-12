@@ -2,15 +2,15 @@
 <project name="project" default="default" basedir="."
 	xmlns:fx="javafx:com.sun.javafx.tools.ant">
 
-	<description>SimpleApp5のビルド</description>
+	<description>SimpleApp6のビルド</description>
 
 	<!-- Jdk8のjavapackagerのantタスクを定義する -->
 	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
 		uri="javafx:com.sun.javafx.tools.ant"
 		classpath=".:${java.home}/../lib/ant-javafx.jar" />
 
-	<!-- SimpleApp5を実行可能jarとしてビルドする -->
-	<target name="default" description="SimpleApp5のビルド">
+	<!-- SimpleApp6を実行可能jarとしてビルドする -->
+	<target name="default" description="SimpleApp6のビルド">
 		<delete dir="work"/>
 		<mkdir dir="work"/>
 		<javac srcdir="src" destdir="work"
@@ -20,9 +20,9 @@
 			</classpath>
 		</javac>
 
-		<fx:jar destfile="SimpleApp5">
-			<fx:application name="SimpleApp5"
-				mainClass="jp.seraphyware.simpleapp5.SimpleApp5"/>
+		<fx:jar destfile="SimpleApp6">
+			<fx:application name="SimpleApp6"
+				mainClass="jp.seraphyware.simpleapp6.SimpleApp6"/>
 
 			<fileset dir="work"/>
 			<fileset dir="src" excludes="**/*.java"/>
