@@ -1,4 +1,8 @@
 .root {
+
+}
+
+.contents {
 	-fx-background-color: #ffff80;
 	-fx-font-size: 12pt;
 	-fx-background-image: url("background-image.jpg");

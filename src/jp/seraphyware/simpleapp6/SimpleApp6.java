@@ -1,7 +1,7 @@
 package jp.seraphyware.simpleapp6;
 
 import java.net.URL;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -36,7 +36,7 @@ import jp.seraphyware.utils.XMLResourceBundleControl;
  * @author seraphy
  */
 public class SimpleApp6 extends Application implements Initializable, AppNotificationHandler {
-	
+
     private static final String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT); //NOI18N
 
     /**
@@ -54,13 +54,13 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 	 */
 	@FXML
 	private BorderPane root;
-	
+
 	/**
 	 * メニューバー
 	 */
 	@FXML
 	private MenuBar menubar;
-	
+
 	/**
 	 * 入れ子になったFXMLのルートがパイントされる.
 	 * フィールド名は子FXMLのidと同じでなければならない.
@@ -83,40 +83,40 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 
 	@FXML
 	private Button btnOK;
-	
+
 	@FXML
 	private MenuItem menuitemOk;
 
 	@Override
     public void handleLaunch(List<String> files) {
-    	logger.info("handleLaunch: " + files);
-    }
-    
-	@Override
-    public void handleOpenFilesAction(List<String> files) {
-    	logger.info("handleOpenFilesAction");
-    }
+    	logger.info("handleLaunch: files=" + files);
+
+    	if (!files.isEmpty()) {
+    		handleOpenFilesAction(files);
+    	}
+	}
 
 	@Override
-    public void handleMessageBoxFailure(Exception x) {
-    	logger.info("handleMessageBoxFailure:" + x);
+    public void handleOpenFilesAction(List<String> files) {
+    	logger.info("handleOpenFilesAction: files=" + files);
     }
 
 	@Override
     public void handleQuitAction() {
     	logger.info("handleQuitAction");
     }
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// 未処理例外ハンドラの設定
 		setApplicationUncaughtExceptionHandler();
-		
+
 		if (IS_MAC) {
+			Deprecation.setName(getClass().getSimpleName());
 	        Deprecation.setPlatformEventHandler(new MacEventHandler(this,
 	                Deprecation.getPlatformEventHandler()));
         }
-		
+
 		// FXMLをリソースから取得する.
 		// (タブオーダーもFXMLの定義順になる.)
 		// (FXML中に「@参照」による相対位置指定がある場合は、このURL相対位置となる.)
@@ -159,7 +159,7 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 
 		// ディレクトリ選択テキストにフォーカスを当てる
 		dirTextField.requestFocus();
-		
+
 		// ウィンドウが閉じても暗黙でアプリケーションを終了しないようにする.
 		// SwingNodeと併用する場合、もしくはMacの場合に必要になる.
 		Platform.setImplicitExit(false);
@@ -168,8 +168,15 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 		primaryStage.setOnHidden(evt -> {
 			Platform.exit();
 		});
+
+		//
+		if (IS_MAC) {
+	        handleLaunch(Collections.emptyList());
+		} else {
+        	handleLaunch(getParameters().getUnnamed());
+		}
 	}
-    
+
     @Override
 	public void stop() {
 		// アプリケーションの終了時に呼び出される
@@ -184,7 +191,7 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 						dirTextFieldController.textProperty().isEmpty(),
 						txtNamePattern.textProperty().isEmpty()
 						));
-		
+
 		// コマンドメニューの活性制御
 		menuitemOk.disableProperty().bind(btnOK.disabledProperty());
 	}
