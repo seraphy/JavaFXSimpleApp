@@ -111,10 +111,12 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 		// 未処理例外ハンドラの設定
 		setApplicationUncaughtExceptionHandler();
 
+		// MACの場合はアプリケーションイベントハンドラを設定する.
 		if (IS_MAC) {
-			Deprecation.setName(getClass().getSimpleName());
 	        Deprecation.setPlatformEventHandler(new MacEventHandler(this,
 	                Deprecation.getPlatformEventHandler()));
+	        logger.info(() -> "applicationName=" + Deprecation.getName());
+			Deprecation.setName(getClass().getSimpleName());
         }
 
 		// FXMLをリソースから取得する.
@@ -169,7 +171,6 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 			Platform.exit();
 		});
 
-		//
 		if (IS_MAC) {
 	        handleLaunch(Collections.emptyList());
 		} else {

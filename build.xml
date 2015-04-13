@@ -32,7 +32,28 @@
 				<attribute name="Implementation-Version" value="1.0"/>
 			</manifest>
 		</fx:jar>
-
 		<delete dir="work"/>
+
+		<mkdir dir="dist"/>
+		<fx:deploy
+			width="800"
+			height="600" 
+			nativeBundles="all"
+			outdir="dist"
+			outfile="SimpleApp">
+			
+			<fx:application
+				name="SimpleApp6" 
+				mainClass="jp.seraphyware.simpleapp6.SimpleApp6"/>
+			
+			<fx:resources>
+				<fx:fileset dir="." includes="*.jar"/>
+			</fx:resources>
+			
+			<fx:info
+				title="SimpleApp6"
+				vendor="seraphyware.jp"/>
+		</fx:deploy>
+
 	</target>
 </project>

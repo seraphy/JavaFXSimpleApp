@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 import com.sun.glass.ui.Application;
 import com.sun.glass.ui.Application.EventHandler;
+import com.sun.glass.ui.Menu;
+import com.sun.glass.ui.MenuBar;
 
 @SuppressWarnings({ "restriction" })
 public class Deprecation {
@@ -247,7 +249,7 @@ public class Deprecation {
 		Application.GetApplication().setName(name);
 	}
 
-	public static String getName(String name) {
+	public static String getName() {
 		return Application.GetApplication().getName();
 	}
 }
