@@ -4,8 +4,8 @@
 
 	<!-- ビルド情報 -->
 	<description>SimpleApp6のビルド</description>
-	<property name="appName" value="SimpleApp5"/>
-	<property name="mainClass" value="jp.seraphyware.simpleapp5.SimpleApp5"/>
+	<property name="appName" value="SimpleApp6"/>
+	<property name="mainClass" value="jp.seraphyware.simpleapp6.SimpleApp6"/>
 	<property name="vendorName" value="seraphyware.jp"/>
 
 	<!-- Jdk8のjavapackagerのantタスクを定義する -->
@@ -69,7 +69,7 @@
 			<fx:application refid="appid"/>
 
 			<fx:resources>
-				<fx:fileset dir="." includes="*.jar"/>
+				<fx:fileset dir="." includes="${appName}.jar"/>
 			</fx:resources>
 
 			<fx:info

@@ -17,4 +17,7 @@
 
 <entry key="ok">実行</entry>
 <entry key="cancel">キャンセル</entry>
+
+<entry key="closeConfirmAlertTitle">確認</entry>
+<entry key="closeConfirmAlertHeaderText">アプリケーションを終了してもよろしいですか？</entry>
 </properties>

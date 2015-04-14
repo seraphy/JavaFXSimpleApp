@@ -1,6 +1,8 @@
 package jp.seraphyware.simpleapp6;
 
 import java.net.URL;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -15,11 +17,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import jp.seraphyware.utils.XMLResourceBundleControl;
 
 /**
@@ -36,6 +40,16 @@ public class SimpleApp6 extends Application implements Initializable {
 	private final Logger logger = Logger.getLogger(getClass().getName());
 
 	/**
+	 * OS名
+	 */
+    private static final String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT); //NOI18N
+
+    /**
+     * True if current platform is running Mac OS X.
+     */
+    public static final boolean IS_MAC = osName.contains("mac"); //NOI18N
+
+    /**
 	 * ルート要素
 	 */
 	@FXML
@@ -63,6 +77,9 @@ public class SimpleApp6 extends Application implements Initializable {
 
 	@FXML
 	private Button btnOK;
+	
+	@FXML
+	private MenuItem menuClose;
 
 	/**
 	 * "OK"メニューアイテム
@@ -70,6 +87,11 @@ public class SimpleApp6 extends Application implements Initializable {
 	@FXML
 	private MenuItem menuitemOk;
 
+	/**
+	 * 終了確認ダイアログ.
+	 */
+	private Alert closeConfirmAlert = new Alert(AlertType.CONFIRMATION);
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// FXMLをリソースから取得する.
@@ -108,31 +130,63 @@ public class SimpleApp6 extends Application implements Initializable {
 		// ステージのタイトル
 		primaryStage.setTitle(rb.getString("title"));
 
+		// 終了確認ダイアログのメッセージを設定
+		closeConfirmAlert.setTitle(rb.getString("closeConfirmAlertTitle"));
+		closeConfirmAlert.setHeaderText(rb.getString("closeConfirmAlertHeaderText"));
+
+		if (IS_MAC) {
+			// Macの場合はFile::Closeメニューアイテムは削除する (システムメニューがあるため)
+			menuClose.getParentMenu().getItems().remove(menuClose);
+		}
+		
+		// ウィンドウを×ボタンで閉じることを検知するためのリスナ
+		primaryStage.setOnCloseRequest(this::onCloseRequest);
+
+		// ウィンドウが閉じられることを検知するためのリスナ
+		primaryStage.setOnHiding(this::onHiding);
+
 		// ステージの表示
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 
 		// ディレクトリ選択テキストにフォーカスを当てる
 		dirTextField.requestFocus();
+	}
+	
+	/**
+	 * ウィンドウの閉じる要求イベントのハンドラ
+	 * @param evt
+	 */
+	protected void onCloseRequest(WindowEvent evt) {
+		logger.info("★onCloseRequest");
 
-		// ウィンドウを×ボタンで閉じることを検知するためのリスナ
-		primaryStage.setOnCloseRequest(evt -> {
-			logger.info("★WindowCloseRequest: " + evt);
-			// evt.consume(); // このイベントをconsumeすると×ボタンが効かなくなる
-		});
-
-		// ウィンドウが閉じられることを検知するためのリスナ
-		primaryStage.setOnHiding(evt -> {
-			logger.info("★WindowHiding: " + evt);
-		});
+		Optional<ButtonType> result = closeConfirmAlert.showAndWait();
+		if (result.get() != ButtonType.OK){
+			// "OK"でなければ、クローズ要求イベントを消してしまう.
+			evt.consume();
+		}
+	}
+	
+	/**
+	 * ウィンドウが閉じられた場合のハンドラ
+	 * @param evt
+	 */
+	protected void onHiding(WindowEvent evt) {
+		logger.info("★onHiding");
 	}
 
+	/**
+	 * アプリケーションが停止する場合のハンドラ
+	 */
     @Override
 	public void stop() {
 		// アプリケーションの終了時に呼び出される
 		logger.info("Applcation#stoped");
 	}
 
+    /**
+     * コントローラの初期化のためにFXMLのバインド後に呼び出される.
+     */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// OKボタンの活性制御
