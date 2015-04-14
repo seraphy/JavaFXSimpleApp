@@ -1,15 +1,10 @@
 package jp.seraphyware.simpleapp6;
 
 import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,28 +16,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import jp.seraphyware.simpleapp6.Deprecation.AppNotificationHandler;
-import jp.seraphyware.simpleapp6.Deprecation.MacEventHandler;
 import jp.seraphyware.utils.XMLResourceBundleControl;
 
 /**
- * メニューバーの使用例.(OSXのスクリーンメニュー対応あり)
+ * ボタンとメニューバーのニーモニックとアクセラレータの使用例.
+ * (およびMacの場合のニーモニック非表示対応)
  *
  * @author seraphy
  */
-public class SimpleApp6 extends Application implements Initializable, AppNotificationHandler {
-
-    private static final String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT); //NOI18N
-
-    /**
-     * True if current platform is running Mac OS X.
-     */
-    public static final boolean IS_MAC = osName.contains("mac"); //NOI18N
+public class SimpleApp6 extends Application implements Initializable {
 
     /**
 	 * ロガー
@@ -54,12 +40,6 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 	 */
 	@FXML
 	private BorderPane root;
-
-	/**
-	 * メニューバー
-	 */
-	@FXML
-	private MenuBar menubar;
 
 	/**
 	 * 入れ子になったFXMLのルートがパイントされる.
@@ -84,41 +64,14 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 	@FXML
 	private Button btnOK;
 
+	/**
+	 * "OK"メニューアイテム
+	 */
 	@FXML
 	private MenuItem menuitemOk;
 
 	@Override
-    public void handleLaunch(List<String> files) {
-    	logger.info("handleLaunch: files=" + files);
-
-    	if (!files.isEmpty()) {
-    		handleOpenFilesAction(files);
-    	}
-	}
-
-	@Override
-    public void handleOpenFilesAction(List<String> files) {
-    	logger.info("handleOpenFilesAction: files=" + files);
-    }
-
-	@Override
-    public void handleQuitAction() {
-    	logger.info("handleQuitAction");
-    }
-
-	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// 未処理例外ハンドラの設定
-		setApplicationUncaughtExceptionHandler();
-
-		// MACの場合はアプリケーションイベントハンドラを設定する.
-		if (IS_MAC) {
-	        Deprecation.setPlatformEventHandler(new MacEventHandler(this,
-	                Deprecation.getPlatformEventHandler()));
-	        logger.info(() -> "applicationName=" + Deprecation.getName());
-			Deprecation.setName(getClass().getSimpleName());
-        }
-
 		// FXMLをリソースから取得する.
 		// (タブオーダーもFXMLの定義順になる.)
 		// (FXML中に「@参照」による相対位置指定がある場合は、このURL相対位置となる.)
@@ -162,20 +115,16 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 		// ディレクトリ選択テキストにフォーカスを当てる
 		dirTextField.requestFocus();
 
-		// ウィンドウが閉じても暗黙でアプリケーションを終了しないようにする.
-		// SwingNodeと併用する場合、もしくはMacの場合に必要になる.
-		Platform.setImplicitExit(false);
-
-		// ウィンドウが閉じられるとアプリケーション終了する.
-		primaryStage.setOnHidden(evt -> {
-			Platform.exit();
+		// ウィンドウを×ボタンで閉じることを検知するためのリスナ
+		primaryStage.setOnCloseRequest(evt -> {
+			logger.info("★WindowCloseRequest: " + evt);
+			// evt.consume(); // このイベントをconsumeすると×ボタンが効かなくなる
 		});
 
-		if (IS_MAC) {
-	        handleLaunch(Collections.emptyList());
-		} else {
-        	handleLaunch(getParameters().getUnnamed());
-		}
+		// ウィンドウが閉じられることを検知するためのリスナ
+		primaryStage.setOnHiding(evt -> {
+			logger.info("★WindowHiding: " + evt);
+		});
 	}
 
     @Override
@@ -218,22 +167,12 @@ public class SimpleApp6 extends Application implements Initializable, AppNotific
 		((Stage) root.getScene().getWindow()).close();
 	}
 
-	/**
-	 * スレッドの未処理例外ハンドラを設定する.
-	 * (単にログに例外を出力するだけ.)
-	 */
-    private void setApplicationUncaughtExceptionHandler() {
-        if (Thread.getDefaultUncaughtExceptionHandler() == null) {
-            // Register a Default Uncaught Exception Handler for the application
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread t, Throwable e) {
-                    Logger.getLogger(this.getClass().getName()).
-                    	log(Level.SEVERE, "An exception was thrown:", e); //NOI18N
-                }
-            });
-        }
-    }
+	@FXML
+	protected void onAbout(ActionEvent evt) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText("About!");
+		alert.show();
+	}
 
     /**
 	 * エントリポイント
