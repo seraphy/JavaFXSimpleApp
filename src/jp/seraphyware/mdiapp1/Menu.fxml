@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<MenuBar fx:id="menuBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <menus>
+    <Menu text="File">
+      <items>
+        <MenuItem text="New">
+          <userData>
+            <jp.seraphyware.mdiapp1.Menus fx:value="FILE_NEW"/>
+          </userData>
+        </MenuItem>
+        <MenuItem text="Save">
+          <userData>
+            <jp.seraphyware.mdiapp1.Menus fx:value="FILE_SAVE"/>
+          </userData>
+        </MenuItem>
+        <MenuItem text="SaveAs">
+          <userData>
+            <jp.seraphyware.mdiapp1.Menus fx:value="FILE_SAVE_AS"/>
+          </userData>
+        </MenuItem>
+        <MenuItem text="Close">
+          <userData>
+            <jp.seraphyware.mdiapp1.Menus fx:value="FILE_CLOSE"/>
+          </userData>
+        </MenuItem>
+        <MenuItem fx:id="menuQuit" text="Quit">
+          <userData>
+            <jp.seraphyware.mdiapp1.Menus fx:value="FILE_QUIT"/>
+          </userData>
+        </MenuItem>
+      </items>
+    </Menu>
+    <Menu text="Edit">
+      <items>
+        <MenuItem text="Delete" />
+      </items>
+    </Menu>
+    <Menu fx:id="menuHelp" text="Help">
+      <items>
+        <MenuItem text="About" />
+      </items>
+    </Menu>
+  </menus>
+</MenuBar>

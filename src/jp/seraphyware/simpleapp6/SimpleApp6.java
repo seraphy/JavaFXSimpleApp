@@ -21,6 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -77,7 +78,7 @@ public class SimpleApp6 extends Application implements Initializable {
 
 	@FXML
 	private Button btnOK;
-	
+
 	@FXML
 	private MenuItem menuClose;
 
@@ -91,7 +92,7 @@ public class SimpleApp6 extends Application implements Initializable {
 	 * 終了確認ダイアログ.
 	 */
 	private Alert closeConfirmAlert = new Alert(AlertType.CONFIRMATION);
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// FXMLをリソースから取得する.
@@ -130,6 +131,9 @@ public class SimpleApp6 extends Application implements Initializable {
 		// ステージのタイトル
 		primaryStage.setTitle(rb.getString("title"));
 
+		// ステージのアイコン
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+
 		// 終了確認ダイアログのメッセージを設定
 		closeConfirmAlert.setTitle(rb.getString("closeConfirmAlertTitle"));
 		closeConfirmAlert.setHeaderText(rb.getString("closeConfirmAlertHeaderText"));
@@ -138,7 +142,7 @@ public class SimpleApp6 extends Application implements Initializable {
 			// Macの場合はFile::Closeメニューアイテムは削除する (システムメニューがあるため)
 			menuClose.getParentMenu().getItems().remove(menuClose);
 		}
-		
+
 		// ウィンドウを×ボタンで閉じることを検知するためのリスナ
 		primaryStage.setOnCloseRequest(this::onCloseRequest);
 
@@ -152,7 +156,7 @@ public class SimpleApp6 extends Application implements Initializable {
 		// ディレクトリ選択テキストにフォーカスを当てる
 		dirTextField.requestFocus();
 	}
-	
+
 	/**
 	 * ウィンドウの閉じる要求イベントのハンドラ
 	 * @param evt
@@ -166,7 +170,7 @@ public class SimpleApp6 extends Application implements Initializable {
 			evt.consume();
 		}
 	}
-	
+
 	/**
 	 * ウィンドウが閉じられた場合のハンドラ
 	 * @param evt

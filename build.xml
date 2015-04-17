@@ -44,6 +44,19 @@
 		<delete dir="work"/>
 	</target>
 
+	<!-- OSによるアイコンファイルの違い -->
+	<condition property="iconName" value="icon.icns">
+		<and>
+			<os family="unix" />
+			<not>
+				<os family="mac" />
+			</not>
+		</and>
+	</condition>
+	<condition property="iconName" value="icon.ico" else="icon.png">
+		<os family="windows" />
+	</condition>
+
 	<!-- バンドルの作成 -->
 	<target name="makeBundles" depends="default"
 		description="自己完結型アプリケーションのパッケージ化">
@@ -74,7 +87,10 @@
 
 			<fx:info
 				title="${appName}"
-				vendor="${vendorName}"/>
+				vendor="${vendorName}">
+				<fx:icon href="icons/${iconName}">
+				</fx:icon>
+			</fx:info>
 		</fx:deploy>
 	</target>
 </project>
