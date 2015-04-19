@@ -38,6 +38,7 @@ public class MDIApp0Mac extends Application implements AppNotificationHandler {
 		Platform.setImplicitExit(false);
 
 		// Macのデフォルトのスクリーンメニューを設定する.
+		System.out.println("menuBar=" + menuBar);
 		Deprecation.setDefaultSystemMenuBar(menuBar);
 
 		// Macのアプリケーションイベントをハンドリングする
@@ -62,6 +63,7 @@ public class MDIApp0Mac extends Application implements AppNotificationHandler {
 	@Override
 	public void handleQuitAction() {
 		// 明示的な終了
+		System.out.println("quit!");
 		Platform.exit();
 	}
 
