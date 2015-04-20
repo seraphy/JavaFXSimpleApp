@@ -29,6 +29,10 @@ public class MenuController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if (MDIApp1.IS_MAC) {
+			menuQuit.getParentMenu().getItems().remove(menuQuit);
+		}
+		
 		for (Menu m : menuBar.getMenus()) {
 			setupMenuItemHandlers(m);
 		}
@@ -57,7 +61,7 @@ public class MenuController implements Initializable {
 			Object userData = i.getUserData();
 			if (userData instanceof MenuHandler) {
 				MenuHandler mh = (MenuHandler) userData;
-				i.setDisable(!mh.canPerform());
+				i.setDisable(!mh.canPerform(docCtrl));
 			} else {
 				i.setDisable(true);
 			}
@@ -67,7 +71,7 @@ public class MenuController implements Initializable {
 	public MenuBar getMenuBar() {
 		if (menuBar == null) {
 			FXMLLoader ldr = new FXMLLoader();
-			ldr.setLocation(getClass().getResource("menu.fxml"));
+			ldr.setLocation(getClass().getResource("Menu.fxml"));
 			ldr.setController(this);
 			try {
 				ldr.load();

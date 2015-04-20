@@ -10,10 +10,10 @@
       <MenuBar fx:id="menuBar">
       	<useSystemMenuBar>true</useSystemMenuBar>
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu fx:id="menuFile" mnemonicParsing="false" text="File">
             <items>
               <MenuItem onAction="#onFileNew" text="File New" />
-              <MenuItem onAction="#onFileClose" text="Close" />
+              <MenuItem fx:id="menuFileClose" onAction="#onFileClose" text="Close" />
             </items>
           </Menu>
         </menus>

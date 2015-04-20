@@ -4,8 +4,8 @@
 
 	<!-- ビルド情報 -->
 	<description>SimpleApp6のビルド</description>
-	<property name="appName" value="SimpleApp6"/>
-	<property name="mainClass" value="jp.seraphyware.simpleapp6.SimpleApp6"/>
+	<property name="appName" value="MDIApp1"/>
+	<property name="mainClass" value="jp.seraphyware.mdiapp1.MDIApp1"/>
 	<property name="vendorName" value="seraphyware.jp"/>
 
 	<!-- Jdk8のjavapackagerのantタスクを定義する -->

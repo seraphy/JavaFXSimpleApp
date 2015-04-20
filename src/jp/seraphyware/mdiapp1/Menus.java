@@ -9,8 +9,8 @@ public enum Menus implements MenuHandler {
 		}
 
 		@Override
-		public boolean canPerform() {
-			return true;
+		public boolean canPerform(DocumentController docCtrl) {
+			return true; // ドキュメントの有無に関わらず利用可能
 		}
 	},
 	FILE_SAVE {
@@ -19,8 +19,8 @@ public enum Menus implements MenuHandler {
 		}
 
 		@Override
-		public boolean canPerform() {
-			return false;
+		public boolean canPerform(DocumentController docCtrl) {
+			return docCtrl != null; // ドキュメントがあれば保存可能
 		}
 	},
 	FILE_SAVE_AS {
@@ -29,8 +29,8 @@ public enum Menus implements MenuHandler {
 		}
 
 		@Override
-		public boolean canPerform() {
-			return false;
+		public boolean canPerform(DocumentController docCtrl) {
+			return docCtrl != null; // ドキュメントがあれば保存可能
 		}
 	},
 	FILE_CLOSE {
@@ -42,8 +42,8 @@ public enum Menus implements MenuHandler {
 		}
 
 		@Override
-		public boolean canPerform() {
-			return true;
+		public boolean canPerform(DocumentController docCtrl) {
+			return docCtrl != null; // ドキュメントがあればクローズ可能
 		}
 	},
 	FILE_QUIT {
@@ -53,8 +53,8 @@ public enum Menus implements MenuHandler {
 		}
 
 		@Override
-		public boolean canPerform() {
-			return true;
+		public boolean canPerform(DocumentController docCtrl) {
+			return true; // いつでもクローズ可能
 		}
 	};
 }

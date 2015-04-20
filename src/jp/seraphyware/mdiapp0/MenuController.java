@@ -8,7 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -19,6 +21,15 @@ public class MenuController {
 	 */
 	@FXML
 	private MenuBar menuBar;
+	
+	@FXML
+	private Menu menuFile;
+	
+	/**
+	 * 閉じるメニュー
+	 */
+	@FXML
+	private MenuItem menuFileClose;
 
 	/**
 	 * コマンドターゲット
@@ -40,6 +51,13 @@ public class MenuController {
 		} catch (IOException ex) {
 			throw new UncheckedIOException(ex);
 		}
+		
+		// menuFileCloseの活性制御
+		// デフォルトメニューの場合はメニューバーがSceneに関連づけられていないので
+		// クローズボタンを非活性とする.
+		menuFile.setOnMenuValidation(evt -> {
+			menuFileClose.setDisable(menuBar.getScene() == null);
+		});
 	}
 
 	public MenuBar getMenuBar() {

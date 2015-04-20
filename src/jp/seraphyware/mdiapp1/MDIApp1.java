@@ -1,12 +1,16 @@
 package jp.seraphyware.mdiapp1;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import jp.seraphyware.mdiapp1.Deprecation.AppNotificationHandler;
 
 public class MDIApp1 extends Application implements AppNotificationHandler {
@@ -54,12 +58,23 @@ public class MDIApp1 extends Application implements AppNotificationHandler {
 	@Override
 	public void handleOpenFilesAction(List<String> files) {
 		System.out.println("handleOpenFilesAction:" + files);
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText("handleOpenFilesAction");
+		alert.setContentText(files.toString());
+		alert.showAndWait();
 	}
 
 	@Override
 	public void handleQuitAction() {
+		// 現在開いている、すべてのドキュメントに対してクローズを要求する.
+		// (キャンセルされる可能性がある)
+		for (DocumentController doc : new ArrayList<>(windowList)) {
+			Stage stg = doc.getStage();
+			stg.fireEvent(new WindowEvent(stg, WindowEvent.WINDOW_CLOSE_REQUEST));
+		}
 		if (windowList.isEmpty()) {
 			// すべてのドキュメントが閉じられていればアプリケーションを終了する.
+			System.out.println("exit.");
 			Platform.exit();
 		}
 	}
@@ -67,6 +82,7 @@ public class MDIApp1 extends Application implements AppNotificationHandler {
 	public void onFileNew() {
 		DocumentController wnd = new DocumentController();
 		wnd.openWindow();
+		wnd.getStage().setTitle(new Timestamp(System.currentTimeMillis()).toString());
 		windowList.add(wnd);
 	}
 

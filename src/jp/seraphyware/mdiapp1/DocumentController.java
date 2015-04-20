@@ -149,11 +149,14 @@ public class DocumentController extends AbstractWindowController {
 	}
 
 	public void performClose() {
+		getStage().toFront(); // 対象のドキュメントを前面にだしてから問い合わせる
+
+		// ドキュメントを閉じて良いか確認する.
 		Alert closeConfirmAlert = new Alert(AlertType.CONFIRMATION);
 		closeConfirmAlert.initOwner(getStage());
 		closeConfirmAlert.setHeaderText("閉じてよろしいですか？");
 		Optional<ButtonType> result = closeConfirmAlert.showAndWait();
-		if (result.get() == ButtonType.OK) {
+		if (result.isPresent() && result.get() == ButtonType.OK) {
 			MDIApp1.getSingleton().closeDocument(this);
 		}
 	}
