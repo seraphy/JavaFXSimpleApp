@@ -48,9 +48,7 @@
 	<condition property="iconName" value="icon.icns">
 		<and>
 			<os family="unix" />
-			<not>
-				<os family="mac" />
-			</not>
+			<os family="mac" />
 		</and>
 	</condition>
 	<condition property="iconName" value="icon.ico" else="icon.png">
@@ -60,6 +58,7 @@
 	<!-- バンドルの作成 -->
 	<target name="makeBundles" depends="default"
 		description="自己完結型アプリケーションのパッケージ化">
+		<echo message="iconName=${iconName}"/>
 		<delete dir="dist"/>
 		<mkdir dir="dist"/>
 

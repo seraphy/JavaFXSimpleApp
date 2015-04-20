@@ -86,6 +86,7 @@ public class MDIApp0Mac extends Application implements AppNotificationHandler {
 	@Override
 	public void handleQuitAction() {
 		// 明示的な終了(Macの場合のみCommand+Qまたはアプリの終了メニューにより通知される)
+		System.out.println("quit!");
 		Platform.exit();
 	}
 
