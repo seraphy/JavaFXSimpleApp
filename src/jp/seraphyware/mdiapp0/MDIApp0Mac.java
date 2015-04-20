@@ -1,14 +1,18 @@
 package jp.seraphyware.mdiapp0;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Locale;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import jp.seraphyware.mdiapp0.Deprecation.AppNotificationHandler;
 
@@ -19,36 +23,56 @@ import jp.seraphyware.mdiapp0.Deprecation.AppNotificationHandler;
  */
 public class MDIApp0Mac extends Application implements AppNotificationHandler {
 
-	/**
-	 * メニューバー
-	 */
-	@FXML
-	private MenuBar menuBar;
+    private static final String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+
+    public static final boolean IS_MAC = osName.contains("mac");
+    public static final boolean IS_LINUX = osName.contains("linux");
+    public static final boolean IS_WINDOWS = osName.contains("windows");
+
+
+    private MenuController defaultMenuController;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// FXMLのロード
-		FXMLLoader ldr = new FXMLLoader();
-		ldr.setLocation(getClass().getResource("Menu.fxml"));
-		ldr.setController(this);
-		ldr.load();
 
-		// すべてのウィンドウが閉じられても
-		// 明示的にExitするまでアプリケーションを終了しない.
-		Platform.setImplicitExit(false);
+		if (IS_MAC) {
+			// Macの場合は、すべてのウィンドウが閉じられても
+			// 明示的にExitするまでアプリケーションを終了しない.
+			Platform.setImplicitExit(false);
 
-		// Macのデフォルトのスクリーンメニューを設定する.
-		Deprecation.setDefaultSystemMenuBar(menuBar);
+			// Macのデフォルトのスクリーンメニューを設定する.
+			defaultMenuController = new MenuController(this);
+			defaultMenuController.load();
 
-		// Macのアプリケーションイベントをハンドリングする
-		Deprecation.setPlatformEventHandler(this);
+			Deprecation.setDefaultSystemMenuBar(defaultMenuController.getMenuBar());
+
+			// Macのアプリケーションイベントをハンドリングする
+			Deprecation.setPlatformEventHandler(this);
+		}
+
+		// 新規メニュー
+		newDocument();
 	}
 
-	@FXML
-	public void onShowMessage() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setHeaderText("Hello!");
-		alert.show();
+	public void newDocument() {
+		MenuController menuController = new MenuController(this);
+		menuController.load();
+
+		Stage stage = new Stage();
+		BorderPane pane = new BorderPane();
+		pane.setTop(menuController.getMenuBar());
+
+		Canvas canvas = new Canvas(300, 100);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		gc.setFill(Color.AQUA);
+		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.strokeText(new Timestamp(System.currentTimeMillis()).toString(), 20, 20);
+
+		pane.setCenter(canvas);
+		stage.setScene(new Scene(pane));
+		stage.sizeToScene();
+
+		stage.show();
 	}
 
 	@Override
@@ -61,7 +85,7 @@ public class MDIApp0Mac extends Application implements AppNotificationHandler {
 
 	@Override
 	public void handleQuitAction() {
-		// 明示的な終了
+		// 明示的な終了(Macの場合のみCommand+Qまたはアプリの終了メニューにより通知される)
 		Platform.exit();
 	}
 
