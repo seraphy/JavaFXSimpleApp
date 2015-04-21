@@ -10,7 +10,6 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import jp.seraphyware.mdiapp1.Deprecation.AppNotificationHandler;
 
 public class MDIApp1 extends Application implements AppNotificationHandler {
@@ -66,17 +65,7 @@ public class MDIApp1 extends Application implements AppNotificationHandler {
 
 	@Override
 	public void handleQuitAction() {
-		// 現在開いている、すべてのドキュメントに対してクローズを要求する.
-		// (キャンセルされる可能性がある)
-		for (DocumentController doc : new ArrayList<>(windowList)) {
-			Stage stg = doc.getStage();
-			stg.fireEvent(new WindowEvent(stg, WindowEvent.WINDOW_CLOSE_REQUEST));
-		}
-		if (windowList.isEmpty()) {
-			// すべてのドキュメントが閉じられていればアプリケーションを終了する.
-			System.out.println("exit.");
-			Platform.exit();
-		}
+		onFileQuit();
 	}
 
 	public void onFileNew() {
@@ -87,8 +76,18 @@ public class MDIApp1 extends Application implements AppNotificationHandler {
 	}
 
 	public void onFileQuit() {
+		// 現在開いている、すべてのドキュメントに対してクローズを要求する.
+		// (キャンセルされる可能性がある)
 		for (DocumentController docCtrl : new ArrayList<>(windowList)) {
-			docCtrl.performClose();
+			if (!docCtrl.performClose()) {
+				// キャンセルしたものがある場合は、ここで終了する
+				return;
+			}
+		}
+		if (windowList.isEmpty()) {
+			// すべてのドキュメントが閉じられていればアプリケーションを終了する.
+			System.out.println("exit.");
+			Platform.exit();
 		}
 	}
 
