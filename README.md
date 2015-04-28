@@ -1,4 +1,5 @@
-# JavaFXSimpleApp
+# JavaFXSimpleApp [![Build Status](https://travis-ci.org/seraphy/JavaFXSimpleApp.svg)](https://travis-ci.org/seraphy/JavaFXSimpleApp)
+
 JavaFX8で簡単なアプリケーションを簡単に作る方法のサンプル例
 
 ## simpleapp0
@@ -46,4 +47,6 @@ jdk8付属のjavapackager用antタスクの使用例にもなっています。
 
 ## ライセンス
 MITライセンス
+
+(もしくはCC-BY)
 
