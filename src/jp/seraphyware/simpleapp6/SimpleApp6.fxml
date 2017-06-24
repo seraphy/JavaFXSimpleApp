@@ -25,8 +25,7 @@
                 </MenuItem>
             </Menu>
             <Menu text="%help">
-                <MenuItem onAction="#onAbout" text="%about">
-                </MenuItem>
+                <MenuItem onAction="#onAbout" text="%about"/>
             </Menu>
         </MenuBar>
     </top>
