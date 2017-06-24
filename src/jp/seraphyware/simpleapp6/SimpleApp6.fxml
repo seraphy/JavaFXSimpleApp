@@ -1,92 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
 <?language javascript?>
 
-<BorderPane fx:id="root" stylesheets="@SimpleApp6.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <MenuBar>
-        <useSystemMenuBar>true</useSystemMenuBar>
-        <menus>
-          <Menu text="%file">
-            <items>
-              <MenuItem text="new"/>
-              <MenuItem fx:id="menuClose" onAction="#onCancel" text="%close">
-                <accelerator>
-                  <KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                </accelerator>
-              </MenuItem>
-            </items>
-          </Menu>
-          <Menu text="%command">
-            <items>
-              <MenuItem fx:id="menuitemOk" onAction="#onOK" text="%ok">
-                <accelerator>
-                  <KeyCodeCombination alt="UP" code="E" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
-                </accelerator>
-              </MenuItem>
-            </items>
-          </Menu>
-          <Menu text="%help">
-            <items>
-              <MenuItem onAction="#onAbout" text="%about">
-              </MenuItem>
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-   <center>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="contents" BorderPane.alignment="CENTER">
-         <children>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="root" stylesheets="@SimpleApp6.css" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <MenuBar>
+            <useSystemMenuBar>true</useSystemMenuBar>
+            <Menu text="%file">
+                <MenuItem text="new"/>
+                <MenuItem fx:id="menuClose" onAction="#onCancel" text="%close">
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
+                    </accelerator>
+                </MenuItem>
+            </Menu>
+            <Menu text="%command">
+                <MenuItem fx:id="menuitemOk" onAction="#onOK" text="%ok">
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
+                    </accelerator>
+                </MenuItem>
+            </Menu>
+            <Menu text="%help">
+                <MenuItem onAction="#onAbout" text="%about">
+                </MenuItem>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+              minWidth="-Infinity" styleClass="contents" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
             <GridPane hgap="3.0" vgap="3.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <fx:include fx:id="dirTextField" source="DirTextField.fxml" GridPane.columnIndex="1" />
-                  <TextField fx:id="txtNamePattern" text="*.*" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <CheckBox fx:id="chkSubdir" mnemonicParsing="true" text="%includeSubDirs" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="%directory" GridPane.halignment="RIGHT">
-                     <mnemonicParsing>true</mnemonicParsing>
-                     <labelFor><fx:reference source="dirTextField"/></labelFor>
-                     <GridPane.margin>
-                        <Insets right="5.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label text="%namePattern" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                     <mnemonicParsing>true</mnemonicParsing>
-                     <labelFor><fx:reference source="txtNamePattern"/></labelFor>
-                     <GridPane.margin>
-                        <Insets right="5.0" />
-                     </GridPane.margin>
-                  </Label>
-               </children>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <fx:include fx:id="dirTextField" source="DirTextField.fxml" GridPane.columnIndex="1"/>
+                <TextField fx:id="txtNamePattern" text="*.*" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <CheckBox fx:id="chkSubdir" text="%includeSubDirs"
+                          GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label text="%directory" GridPane.halignment="RIGHT">
+                    <mnemonicParsing>true</mnemonicParsing>
+                    <labelFor>
+                        <fx:reference source="dirTextField"/>
+                    </labelFor>
+                    <GridPane.margin>
+                        <Insets right="5.0"/>
+                    </GridPane.margin>
+                </Label>
+                <Label text="%namePattern" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                    <mnemonicParsing>true</mnemonicParsing>
+                    <labelFor>
+                        <fx:reference source="txtNamePattern"/>
+                    </labelFor>
+                    <GridPane.margin>
+                        <Insets right="5.0"/>
+                    </GridPane.margin>
+                </Label>
             </GridPane>
             <FlowPane alignment="TOP_RIGHT" hgap="5.0" vgap="5.0">
-               <children>
-                  <Button fx:id="btnOK" defaultButton="true" mnemonicParsing="false" onAction="#onOK" text="%ok" />
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#onCancel" text="%cancel" />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Button fx:id="btnOK" defaultButton="true" mnemonicParsing="false" onAction="#onOK" text="%ok"/>
+                <Button cancelButton="true" mnemonicParsing="false" onAction="#onCancel" text="%cancel"/>
             </FlowPane>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </VBox>
-   </center>
+        </VBox>
+    </center>
 </BorderPane>
