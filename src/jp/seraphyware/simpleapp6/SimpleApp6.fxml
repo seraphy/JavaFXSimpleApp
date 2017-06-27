@@ -10,7 +10,6 @@
         <MenuBar>
             <useSystemMenuBar>true</useSystemMenuBar>
             <Menu text="%file">
-                <MenuItem text="new"/>
                 <MenuItem fx:id="menuClose" onAction="#onCancel" text="%close">
                     <accelerator>
                         <KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
