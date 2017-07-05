@@ -1,60 +1,48 @@
 package jp.seraphyware.utils;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
+
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-
 public final class ErrorDialogUtils {
 
-	private ErrorDialogUtils() {
-		super();
-	}
+    private ErrorDialogUtils() {
+        super();
+    }
 
-	public static void showException(Throwable ex) {
-		if (ex == null) {
-			return;
-		}
+    public static void showException(Throwable ex) throws IOException {
+        if (ex == null) {
+            return;
+        }
 
-		// jdk1.8u40から、Alertクラスによるダイアログがサポートされた.
-		// 使い方は以下引用
-		// http://code.makery.ch/blog/javafx-dialogs-official/
+        // jdk1.8u40から、Alertクラスによるダイアログがサポートされた.
+        // 使い方は以下引用
+        // http://code.makery.ch/blog/javafx-dialogs-official/
 
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Exception Dialog");
-		alert.setHeaderText(ex.getClass().getName());
-		alert.setContentText(ex.getMessage());
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Exception Dialog");
+        alert.setHeaderText(ex.getClass().getName());
+        alert.setContentText(ex.getMessage());
 
-		// Create expandable Exception.
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		ex.printStackTrace(pw);
-		String exceptionText = sw.toString();
+        GridPane expContent = new FXMLLoader(ErrorDialogUtils.class.getResource("ErrorDialogExpandableContent.fxml")).load();
 
-		Label label = new Label("The exception stacktrace was:");
+        // Create expandable Exception.
+        try (StringWriter sw = new StringWriter()) {
+            try (PrintWriter pw = new PrintWriter(sw)) {
+                ex.printStackTrace(pw);
+            }
+            ((TextArea) expContent.getChildren().get(1)).setText(sw.toString());
+        }
 
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
+        // Set expandable Exception into the dialog pane.
+        alert.getDialogPane().setExpandableContent(expContent);
 
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		// Set expandable Exception into the dialog pane.
-		alert.getDialogPane().setExpandableContent(expContent);
-
-		alert.showAndWait();
-	}
+        alert.showAndWait();
+    }
 }
