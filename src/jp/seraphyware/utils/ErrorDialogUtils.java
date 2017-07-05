@@ -25,10 +25,9 @@ public final class ErrorDialogUtils {
         // 使い方は以下引用
         // http://code.makery.ch/blog/javafx-dialogs-official/
 
-        Alert alert = new Alert(AlertType.ERROR);
+        Alert alert = new Alert(AlertType.ERROR, ex.getMessage());
         alert.setTitle("Exception Dialog");
         alert.setHeaderText(ex.getClass().getName());
-        alert.setContentText(ex.getMessage());
 
         // Create expandable Exception.
         StringWriter sw = new StringWriter();
