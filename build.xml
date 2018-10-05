@@ -23,7 +23,7 @@
 	<target name="default" description="ビルドと実行可能jarの作成">
 		<delete dir="work"/>
 		<mkdir dir="work"/>
-		<javac srcdir="src" destdir="work"
+		<javac srcdir="src" destdir="work" encoding="UTF-8"
 			includeantruntime="false">
 			<classpath>
 				<pathelement path="work"/>
