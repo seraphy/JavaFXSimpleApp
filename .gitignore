@@ -1,5 +1,6 @@
 /SimpleApp6.jar
 /dist/
+/bin
 *.jar
 .DS_Store
 
